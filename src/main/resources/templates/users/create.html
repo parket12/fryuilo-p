@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Создать пользователя</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-user-plus"></i> Создать пользователя
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/users" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Информация о пользователе</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/users/create}" th:object="${user}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">Имя *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid'"
+                                       id="firstName" 
+                                       th:field="*{firstName}" 
+                                       placeholder="Введите имя">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}" 
+                                     th:errors="*{firstName}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Фамилия *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid'"
+                                       id="lastName" 
+                                       th:field="*{lastName}" 
+                                       placeholder="Введите фамилию">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}" 
+                                     th:errors="*{lastName}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                                       id="email" 
+                                       th:field="*{email}" 
+                                       placeholder="Введите email">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" 
+                                     th:errors="*{email}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Телефон *</label>
+                                <input type="tel" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'"
+                                       id="phone" 
+                                       th:field="*{phone}" 
+                                       placeholder="Введите телефон">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" 
+                                     th:errors="*{phone}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="birthDate" class="form-label">Дата рождения *</label>
+                                <input type="date" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('birthDate')} ? 'is-invalid'"
+                                       id="birthDate" 
+                                       th:field="*{birthDate}">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('birthDate')}" 
+                                     th:errors="*{birthDate}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Возраст</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('age')} ? 'is-invalid'"
+                                       id="age" 
+                                       th:field="*{age}" 
+                                       min="18" 
+                                       max="100" 
+                                       placeholder="Введите возраст">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('age')}" 
+                                     th:errors="*{age}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="department" class="form-label">Отдел</label>
+                                <select class="form-select" 
+                                        th:classappend="${#fields.hasErrors('department')} ? 'is-invalid'"
+                                        id="department" 
+                                        th:field="*{department}">
+                                    <option value="">Выберите отдел</option>
+                                    <option th:each="dept : ${departments}" 
+                                            th:value="${dept.id}" 
+                                            th:text="${dept.name}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('department')}" 
+                                     th:errors="*{department}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="roles" class="form-label">Роли</label>
+                                <select class="form-select" 
+                                        th:classappend="${#fields.hasErrors('roles')} ? 'is-invalid'"
+                                        id="roles" 
+                                        th:field="*{roles}" 
+                                        multiple>
+                                    <option th:each="role : ${roles}" 
+                                            th:value="${role.id}" 
+                                            th:text="${role.name}"></option>
+                                </select>
+                                <div class="form-text">Удерживайте Ctrl для выбора нескольких ролей</div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('roles')}" 
+                                     th:errors="*{roles}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="projects" class="form-label">Проекты</label>
+                                <select class="form-select" 
+                                        th:classappend="${#fields.hasErrors('projects')} ? 'is-invalid'"
+                                        id="projects" 
+                                        th:field="*{projects}" 
+                                        multiple>
+                                    <option th:each="project : ${projects}" 
+                                            th:value="${project.id}" 
+                                            th:text="${project.name}"></option>
+                                </select>
+                                <div class="form-text">Удерживайте Ctrl для выбора нескольких проектов</div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('projects')}" 
+                                     th:errors="*{projects}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/users" class="btn btn-secondary me-md-2">Отмена</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Создать пользователя
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

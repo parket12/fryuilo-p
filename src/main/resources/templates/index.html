@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Главная страница</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-tachometer-alt"></i> Панель управления
+            </h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Пользователи</h5>
+                        <p class="card-text">Управление пользователями системы</p>
+                        <a href="/users" class="btn btn-primary">
+                            <i class="fas fa-eye"></i> Просмотр
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-user-circle fa-3x text-info mb-3"></i>
+                        <h5 class="card-title">Профили</h5>
+                        <p class="card-text">Профили пользователей</p>
+                        <a href="/profiles" class="btn btn-info">
+                            <i class="fas fa-eye"></i> Просмотр
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-building fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">Отделы</h5>
+                        <p class="card-text">Управление отделами</p>
+                        <a href="/departments" class="btn btn-success">
+                            <i class="fas fa-eye"></i> Просмотр
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-user-tag fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title">Роли</h5>
+                        <p class="card-text">Управление ролями</p>
+                        <a href="/roles" class="btn btn-warning">
+                            <i class="fas fa-eye"></i> Просмотр
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-project-diagram fa-3x text-danger mb-3"></i>
+                        <h5 class="card-title">Проекты</h5>
+                        <p class="card-text">Управление проектами</p>
+                        <a href="/projects" class="btn btn-danger">
+                            <i class="fas fa-eye"></i> Просмотр
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle"></i> Информация о системе
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Добро пожаловать в систему управления! Здесь вы можете:</p>
+                        <ul>
+                            <li>Управлять пользователями и их профилями</li>
+                            <li>Создавать и редактировать отделы</li>
+                            <li>Назначать роли пользователям</li>
+                            <li>Управлять проектами и их участниками</li>
+                            <li>Просматривать статистику и отчеты</li>
+                        </ul>
+                        <p class="mb-0">
+                            <strong>Связи между сущностями:</strong><br>
+                            • Пользователь ↔ Профиль (1:1)<br>
+                            • Отдел → Пользователи (1:M)<br>
+                            • Пользователи ↔ Роли (M:M)<br>
+                            • Пользователи ↔ Проекты (M:M)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

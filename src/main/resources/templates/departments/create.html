@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Создать отдел</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-building"></i> Создать отдел
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/departments" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Информация об отделе</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/departments/create}" th:object="${department}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Название отдела *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                       id="name" 
+                                       th:field="*{name}" 
+                                       placeholder="Введите название отдела">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" 
+                                     th:errors="*{name}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Код отдела *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('code')} ? 'is-invalid'"
+                                       id="code" 
+                                       th:field="*{code}" 
+                                       placeholder="Введите код отдела (например: IT, HR, FIN)"
+                                       style="text-transform: uppercase;">
+                                <div class="form-text">Только заглавные буквы и цифры</div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('code')}" 
+                                     th:errors="*{code}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание *</label>
+                        <textarea class="form-control" 
+                                  th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                                  id="description" 
+                                  th:field="*{description}" 
+                                  rows="3" 
+                                  placeholder="Введите описание отдела"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" 
+                             th:errors="*{description}"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="budget" class="form-label">Бюджет</label>
+                                <div class="input-group">
+                                    <input type="number" 
+                                           class="form-control" 
+                                           th:classappend="${#fields.hasErrors('budget')} ? 'is-invalid'"
+                                           id="budget" 
+                                           th:field="*{budget}" 
+                                           min="0" 
+                                           step="0.01" 
+                                           placeholder="Введите бюджет">
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('budget')}" 
+                                     th:errors="*{budget}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="employeeCount" class="form-label">Количество сотрудников</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('employeeCount')} ? 'is-invalid'"
+                                       id="employeeCount" 
+                                       th:field="*{employeeCount}" 
+                                       min="1" 
+                                       max="1000" 
+                                       placeholder="Введите количество сотрудников">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('employeeCount')}" 
+                                     th:errors="*{employeeCount}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   th:field="*{isActive}" 
+                                   id="isActive">
+                            <label class="form-check-label" for="isActive">
+                                Активный отдел
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/departments" class="btn btn-secondary me-md-2">Отмена</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Создать отдел
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Автоматическое преобразование кода в верхний регистр
+        document.getElementById('code').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>
+

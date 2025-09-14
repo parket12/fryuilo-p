@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Создать роль</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-user-tag"></i> Создать роль
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/roles" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Информация о роли</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/roles/create}" th:object="${role}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Название роли *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                       id="name" 
+                                       th:field="*{name}" 
+                                       placeholder="Введите название роли">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" 
+                                     th:errors="*{name}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Код роли *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('code')} ? 'is-invalid'"
+                                       id="code" 
+                                       th:field="*{code}" 
+                                       placeholder="Введите код роли (например: ADMIN, USER)"
+                                       style="text-transform: uppercase;">
+                                <div class="form-text">Только заглавные буквы и подчеркивания</div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('code')}" 
+                                     th:errors="*{code}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание роли *</label>
+                        <textarea class="form-control" 
+                                  th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                                  id="description" 
+                                  th:field="*{description}" 
+                                  rows="3" 
+                                  placeholder="Введите описание роли"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" 
+                             th:errors="*{description}"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="accessLevel" class="form-label">Уровень доступа *</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('accessLevel')} ? 'is-invalid'"
+                                       id="accessLevel" 
+                                       th:field="*{accessLevel}" 
+                                       min="1" 
+                                       max="10" 
+                                       placeholder="Введите уровень доступа (1-10)">
+                                <div class="form-text">1 - минимальный доступ, 10 - максимальный доступ</div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('accessLevel')}" 
+                                     th:errors="*{accessLevel}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   th:field="*{isActive}" 
+                                   id="isActive">
+                            <label class="form-check-label" for="isActive">
+                                Активная роль
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   th:field="*{isSystem}" 
+                                   id="isSystem">
+                            <label class="form-check-label" for="isSystem">
+                                Системная роль
+                            </label>
+                            <div class="form-text">Системные роли нельзя удалять</div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/roles" class="btn btn-secondary me-md-2">Отмена</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Создать роль
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Автоматическое преобразование кода в верхний регистр
+        document.getElementById('code').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>
+

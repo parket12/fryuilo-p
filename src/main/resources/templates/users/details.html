@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Детали пользователя</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-user"></i> Детали пользователя
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/users" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+                <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Редактировать
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Основная информация</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>ID:</strong> <span th:text="${user.id}"></span></p>
+                                <p><strong>Имя:</strong> <span th:text="${user.firstName}"></span></p>
+                                <p><strong>Фамилия:</strong> <span th:text="${user.lastName}"></span></p>
+                                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Телефон:</strong> <span th:text="${user.phone}"></span></p>
+                                <p><strong>Дата рождения:</strong> <span th:text="${#temporals.format(user.birthDate, 'dd.MM.yyyy')}"></span></p>
+                                <p><strong>Возраст:</strong> <span th:text="${user.age}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Связи</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6>Отдел</h6>
+                                <div th:if="${user.department}">
+                                    <span class="badge bg-primary fs-6" th:text="${user.department.name}"></span>
+                                    <p class="text-muted mt-1" th:text="${user.department.description}"></p>
+                                </div>
+                                <div th:unless="${user.department}">
+                                    <span class="text-muted">Не назначен</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>Роли</h6>
+                                <div th:if="${user.roles != null && !user.roles.isEmpty()}">
+                                    <span th:each="role, iterStat : ${user.roles}" 
+                                          th:text="${role.name}" 
+                                          class="badge bg-secondary me-1 mb-1"></span>
+                                </div>
+                                <div th:unless="${user.roles != null && !user.roles.isEmpty()}">
+                                    <span class="text-muted">Нет ролей</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>Проекты</h6>
+                                <div th:if="${user.projects != null && !user.projects.isEmpty()}">
+                                    <span th:each="project, iterStat : ${user.projects}" 
+                                          th:text="${project.name}" 
+                                          class="badge bg-info me-1 mb-1"></span>
+                                </div>
+                                <div th:unless="${user.projects != null && !user.projects.isEmpty()}">
+                                    <span class="text-muted">Нет проектов</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Действия</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Редактировать
+                            </a>
+                            <form th:action="@{/users/{id}/delete(id=${user.id})}" 
+                                  method="post" 
+                                  onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?')">
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="fas fa-trash"></i> Удалить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-3" th:if="${user.profile}">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Профиль</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Адрес:</strong> <span th:text="${user.profile.address}"></span></p>
+                        <p><strong>Город:</strong> <span th:text="${user.profile.city}"></span></p>
+                        <p><strong>Страна:</strong> <span th:text="${user.profile.country}"></span></p>
+                        <p th:if="${user.profile.postalCode}">
+                            <strong>Почтовый индекс:</strong> <span th:text="${user.profile.postalCode}"></span>
+                        </p>
+                        <p th:if="${user.profile.biography}">
+                            <strong>Биография:</strong><br>
+                            <span th:text="${user.profile.biography}"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

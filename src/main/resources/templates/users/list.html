@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Пользователи</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-users"></i> Пользователи
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/users/create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Добавить пользователя
+                </a>
+            </div>
+        </div>
+
+        <!-- Форма поиска и фильтрации -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-search"></i> Поиск и фильтрация
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="get" action="/users" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="search" class="form-label">Поиск</label>
+                        <input type="text" class="form-control" id="search" name="search" 
+                               th:value="${search}" placeholder="Имя, фамилия, email...">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="departmentId" class="form-label">Отдел</label>
+                        <select class="form-select" id="departmentId" name="departmentId">
+                            <option value="">Все отделы</option>
+                            <option th:each="dept : ${departments}" 
+                                    th:value="${dept.id}" 
+                                    th:text="${dept.name}"
+                                    th:selected="${departmentId == dept.id}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="roleId" class="form-label">Роль</label>
+                        <select class="form-select" id="roleId" name="roleId">
+                            <option value="">Все роли</option>
+                            <option th:each="role : ${roles}" 
+                                    th:value="${role.id}" 
+                                    th:text="${role.name}"
+                                    th:selected="${roleId == role.id}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="minAge" class="form-label">Возраст от</label>
+                        <input type="number" class="form-control" id="minAge" name="minAge" 
+                               th:value="${minAge}" min="18" max="100">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="maxAge" class="form-label">Возраст до</label>
+                        <input type="number" class="form-control" id="maxAge" name="maxAge" 
+                               th:value="${maxAge}" min="18" max="100">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <a href="/users" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-times"></i> Сбросить фильтры
+                        </a>
+                        <a href="/users/deleted" class="btn btn-outline-warning btn-sm">
+                            <i class="fas fa-trash"></i> Удаленные пользователи
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="card-title mb-0">Список пользователей</h5>
+                        <small class="text-muted">Всего: <span th:text="${totalItems}">0</span></small>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="/users/create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Добавить пользователя
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a th:href="@{/users(page=${currentPage}, size=10, sortBy='id', sortDir=${sortBy == 'id' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}" 
+                                       class="text-decoration-none">
+                                        ID
+                                        <i th:if="${sortBy == 'id'}" 
+                                           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a th:href="@{/users(page=${currentPage}, size=10, sortBy='firstName', sortDir=${sortBy == 'firstName' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}" 
+                                       class="text-decoration-none">
+                                        Имя
+                                        <i th:if="${sortBy == 'firstName'}" 
+                                           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a th:href="@{/users(page=${currentPage}, size=10, sortBy='lastName', sortDir=${sortBy == 'lastName' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}" 
+                                       class="text-decoration-none">
+                                        Фамилия
+                                        <i th:if="${sortBy == 'lastName'}" 
+                                           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a th:href="@{/users(page=${currentPage}, size=10, sortBy='email', sortDir=${sortBy == 'email' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}" 
+                                       class="text-decoration-none">
+                                        Email
+                                        <i th:if="${sortBy == 'email'}" 
+                                           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></i>
+                                    </a>
+                                </th>
+                                <th>Телефон</th>
+                                <th>
+                                    <a th:href="@{/users(page=${currentPage}, size=10, sortBy='age', sortDir=${sortBy == 'age' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}" 
+                                       class="text-decoration-none">
+                                        Возраст
+                                        <i th:if="${sortBy == 'age'}" 
+                                           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></i>
+                                    </a>
+                                </th>
+                                <th>Отдел</th>
+                                <th>Роли</th>
+                                <th>Проекты</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}"></td>
+                                <td th:text="${user.firstName}"></td>
+                                <td th:text="${user.lastName}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.phone}"></td>
+                                <td th:text="${user.age}"></td>
+                                <td>
+                                    <span th:if="${user.department}" 
+                                          th:text="${user.department.name}" 
+                                          class="badge bg-primary"></span>
+                                    <span th:unless="${user.department}" 
+                                          class="text-muted">Не назначен</span>
+                                </td>
+                                <td>
+                                    <span th:each="role, iterStat : ${user.roles}" 
+                                          th:text="${role.name}" 
+                                          class="badge bg-secondary me-1"></span>
+                                    <span th:if="${#lists.isEmpty(user.roles)}" 
+                                          class="text-muted">Нет ролей</span>
+                                </td>
+                                <td>
+                                    <span th:each="project, iterStat : ${user.projects}" 
+                                          th:text="${project.name}" 
+                                          class="badge bg-info me-1"></span>
+                                    <span th:if="${#lists.isEmpty(user.projects)}" 
+                                          class="text-muted">Нет проектов</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a th:href="@{/users/{id}(id=${user.id})}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a th:href="@{/users/{id}/edit(id=${user.id})}" 
+                                           class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form th:action="@{/users/{id}/soft-delete(id=${user.id})}" 
+                                              method="post" 
+                                              style="display: inline;"
+                                              onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?')">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Пагинация -->
+        <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+            <ul class="pagination justify-content-center">
+                <!-- Предыдущая страница -->
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" 
+                       th:href="@{/users(page=${currentPage - 1}, size=10, sortBy=${sortBy}, sortDir=${sortDir}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}"
+                       th:if="${currentPage > 0}">
+                        <i class="fas fa-chevron-left"></i> Предыдущая
+                    </a>
+                    <span class="page-link" th:if="${currentPage == 0}">
+                        <i class="fas fa-chevron-left"></i> Предыдущая
+                    </span>
+                </li>
+                
+                <!-- Номера страниц -->
+                <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" 
+                    class="page-item" 
+                    th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a class="page-link" 
+                       th:href="@{/users(page=${pageNum}, size=10, sortBy=${sortBy}, sortDir=${sortDir}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}"
+                       th:text="${pageNum + 1}"></a>
+                </li>
+                
+                <!-- Следующая страница -->
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" 
+                       th:href="@{/users(page=${currentPage + 1}, size=10, sortBy=${sortBy}, sortDir=${sortDir}, search=${search}, departmentId=${departmentId}, roleId=${roleId}, projectId=${projectId}, minAge=${minAge}, maxAge=${maxAge})}"
+                       th:if="${currentPage < totalPages - 1}">
+                        Следующая <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <span class="page-link" th:if="${currentPage == totalPages - 1}">
+                        Следующая <i class="fas fa-chevron-right"></i>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Информация о пагинации -->
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <small class="text-muted">
+                    Показано <span th:text="${users.numberOfElements}">0</span> из 
+                    <span th:text="${totalItems}">0</span> записей
+                </small>
+            </div>
+            <div class="col-md-6 text-end">
+                <small class="text-muted">
+                    Страница <span th:text="${currentPage + 1}">1</span> из 
+                    <span th:text="${totalPages}">1</span>
+                </small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

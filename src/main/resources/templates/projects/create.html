@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Создать проект</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-project-diagram"></i> Создать проект
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/projects" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Информация о проекте</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/projects/create}" th:object="${project}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Название проекта *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                       id="name" 
+                                       th:field="*{name}" 
+                                       placeholder="Введите название проекта">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" 
+                                     th:errors="*{name}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="budget" class="form-label">Бюджет</label>
+                                <div class="input-group">
+                                    <input type="number" 
+                                           class="form-control" 
+                                           th:classappend="${#fields.hasErrors('budget')} ? 'is-invalid'"
+                                           id="budget" 
+                                           th:field="*{budget}" 
+                                           min="0" 
+                                           step="0.01" 
+                                           placeholder="Введите бюджет">
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('budget')}" 
+                                     th:errors="*{budget}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание проекта *</label>
+                        <textarea class="form-control" 
+                                  th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                                  id="description" 
+                                  th:field="*{description}" 
+                                  rows="3" 
+                                  placeholder="Введите описание проекта"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" 
+                             th:errors="*{description}"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="startDate" class="form-label">Дата начала *</label>
+                                <input type="date" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'"
+                                       id="startDate" 
+                                       th:field="*{startDate}">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" 
+                                     th:errors="*{startDate}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="endDate" class="form-label">Дата окончания</label>
+                                <input type="date" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('endDate')} ? 'is-invalid'"
+                                       id="endDate" 
+                                       th:field="*{endDate}">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" 
+                                     th:errors="*{endDate}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Статус *</label>
+                                <select class="form-select" 
+                                        th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'"
+                                        id="status" 
+                                        th:field="*{status}">
+                                    <option value="PLANNING">Планирование</option>
+                                    <option value="IN_PROGRESS">В работе</option>
+                                    <option value="COMPLETED">Завершен</option>
+                                    <option value="CANCELLED">Отменен</option>
+                                    <option value="ON_HOLD">Приостановлен</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('status')}" 
+                                     th:errors="*{status}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="priority" class="form-label">Приоритет *</label>
+                                <select class="form-select" 
+                                        th:classappend="${#fields.hasErrors('priority')} ? 'is-invalid'"
+                                        id="priority" 
+                                        th:field="*{priority}">
+                                    <option value="LOW">Низкий</option>
+                                    <option value="MEDIUM">Средний</option>
+                                    <option value="HIGH">Высокий</option>
+                                    <option value="CRITICAL">Критический</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('priority')}" 
+                                     th:errors="*{priority}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="progress" class="form-label">Прогресс (%)</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       th:classappend="${#fields.hasErrors('progress')} ? 'is-invalid'"
+                                       id="progress" 
+                                       th:field="*{progress}" 
+                                       min="0" 
+                                       max="100" 
+                                       placeholder="0">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('progress')}" 
+                                     th:errors="*{progress}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   th:field="*{isActive}" 
+                                   id="isActive">
+                            <label class="form-check-label" for="isActive">
+                                Активный проект
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/projects" class="btn btn-secondary me-md-2">Отмена</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Создать проект
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
