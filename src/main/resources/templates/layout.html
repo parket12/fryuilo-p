@@ -39,6 +39,14 @@
                     <h5 class="text-center mb-4">
                         <i class="fas fa-cogs"></i> Система управления
                     </h5>
+                    
+                    <!-- User info -->
+                    <div th:if="${session.user}" class="text-center mb-3 p-2 bg-light rounded">
+                        <small class="text-muted">Добро пожаловать,</small><br>
+                        <strong th:text="${session.user.firstName + ' ' + session.user.lastName}"></strong><br>
+                        <small class="text-muted" th:text="${session.user.username}"></small>
+                    </div>
+                    
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="/">
@@ -48,6 +56,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/users">
                                 <i class="fas fa-users"></i> Пользователи
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/students">
+                                <i class="fas fa-graduation-cap"></i> Студенты
                             </a>
                         </li>
                         <li class="nav-item">
@@ -68,6 +81,23 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/projects">
                                 <i class="fas fa-project-diagram"></i> Проекты
+                            </a>
+                        </li>
+                        
+                        <!-- Auth links -->
+                        <li class="nav-item mt-3" th:if="${session.isAuthenticated == null or !session.isAuthenticated}">
+                            <a class="nav-link" href="/auth/login">
+                                <i class="fas fa-sign-in-alt"></i> Вход
+                            </a>
+                        </li>
+                        <li class="nav-item" th:if="${session.isAuthenticated == null or !session.isAuthenticated}">
+                            <a class="nav-link" href="/auth/register">
+                                <i class="fas fa-user-plus"></i> Регистрация
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3" th:if="${session.isAuthenticated != null and session.isAuthenticated}">
+                            <a class="nav-link text-danger" href="/auth/logout">
+                                <i class="fas fa-sign-out-alt"></i> Выход
                             </a>
                         </li>
                     </ul>
@@ -151,6 +181,14 @@
                         <h5 class="text-center mb-4">
                             <i class="fas fa-cogs"></i> Система управления
                         </h5>
+                        
+                        <!-- User info -->
+                        <div th:if="${session.user}" class="text-center mb-3 p-2 bg-light rounded">
+                            <small class="text-muted">Добро пожаловать,</small><br>
+                            <strong th:text="${session.user.firstName + ' ' + session.user.lastName}"></strong><br>
+                            <small class="text-muted" th:text="${session.user.username}"></small>
+                        </div>
+                        
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
@@ -160,6 +198,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/users">
                                     <i class="fas fa-users"></i> Пользователи
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/students">
+                                    <i class="fas fa-graduation-cap"></i> Студенты
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -180,6 +223,23 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/projects">
                                     <i class="fas fa-project-diagram"></i> Проекты
+                                </a>
+                            </li>
+                            
+                            <!-- Auth links -->
+                            <li class="nav-item mt-3" th:if="${session.isAuthenticated == null or !session.isAuthenticated}">
+                                <a class="nav-link" href="/auth/login">
+                                    <i class="fas fa-sign-in-alt"></i> Вход
+                                </a>
+                            </li>
+                            <li class="nav-item" th:if="${session.isAuthenticated == null or !session.isAuthenticated}">
+                                <a class="nav-link" href="/auth/register">
+                                    <i class="fas fa-user-plus"></i> Регистрация
+                                </a>
+                            </li>
+                            <li class="nav-item mt-3" th:if="${session.isAuthenticated != null and session.isAuthenticated}">
+                                <a class="nav-link text-danger" href="/auth/logout">
+                                    <i class="fas fa-sign-out-alt"></i> Выход
                                 </a>
                             </li>
                         </ul>

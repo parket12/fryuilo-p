@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Регистрация</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-user-plus"></i> Регистрация
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Сообщения об ошибках -->
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+                        
+                        <!-- Сообщения об успехе -->
+                        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                            <i class="fas fa-check-circle"></i>
+                            <span th:text="${successMessage}"></span>
+                        </div>
+                        
+                        <form th:action="@{/auth/register}" th:object="${user}" method="post">
+                            <div class="row">
+                                <!-- Имя -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">
+                                        <i class="fas fa-user"></i> Имя *
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="firstName" 
+                                           th:field="*{firstName}"
+                                           placeholder="Введите имя"
+                                           required>
+                                    <div th:if="${#fields.hasErrors('firstName')}" class="text-danger">
+                                        <small th:errors="*{firstName}"></small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Фамилия -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">
+                                        <i class="fas fa-user"></i> Фамилия *
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="lastName" 
+                                           th:field="*{lastName}"
+                                           placeholder="Введите фамилию"
+                                           required>
+                                    <div th:if="${#fields.hasErrors('lastName')}" class="text-danger">
+                                        <small th:errors="*{lastName}"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <!-- Email -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope"></i> Email *
+                                    </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           th:field="*{email}"
+                                           placeholder="example@email.com"
+                                           required>
+                                    <div th:if="${#fields.hasErrors('email')}" class="text-danger">
+                                        <small th:errors="*{email}"></small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Телефон -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">
+                                        <i class="fas fa-phone"></i> Телефон *
+                                    </label>
+                                    <input type="tel" 
+                                           class="form-control" 
+                                           id="phone" 
+                                           th:field="*{phone}"
+                                           placeholder="+7 (999) 123-45-67"
+                                           required>
+                                    <div th:if="${#fields.hasErrors('phone')}" class="text-danger">
+                                        <small th:errors="*{phone}"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <!-- Логин -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="username" class="form-label">
+                                        <i class="fas fa-user-circle"></i> Логин *
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="username" 
+                                           th:field="*{username}"
+                                           placeholder="Введите логин"
+                                           required>
+                                    <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+                                        <small th:errors="*{username}"></small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Дата рождения -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="birthDate" class="form-label">
+                                        <i class="fas fa-calendar"></i> Дата рождения *
+                                    </label>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           id="birthDate" 
+                                           th:field="*{birthDate}"
+                                           required>
+                                    <div th:if="${#fields.hasErrors('birthDate')}" class="text-danger">
+                                        <small th:errors="*{birthDate}"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Пароль -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock"></i> Пароль *
+                                </label>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password" 
+                                       th:field="*{password}"
+                                       placeholder="Введите пароль (минимум 6 символов)"
+                                       required>
+                                <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                                    <small th:errors="*{password}"></small>
+                                </div>
+                            </div>
+                            
+                            <!-- Кнопки -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus"></i> Зарегистрироваться
+                                </button>
+                                <a href="/auth/login" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-sign-in-alt"></i> Уже есть аккаунт?
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <small class="text-muted">
+                            Поля, отмеченные *, обязательны для заполнения
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

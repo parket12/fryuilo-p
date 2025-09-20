@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Добро пожаловать</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center bg-success text-white">
+                        <h2 class="mb-0">
+                            <i class="fas fa-handshake"></i> Добро пожаловать!
+                        </h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-user-circle fa-5x text-success mb-3"></i>
+                            <h3 th:text="'Привет, ' + ${session.user.firstName + ' ' + session.user.lastName} + '!'"></h3>
+                            <p class="text-muted" th:text="'Логин: ' + ${session.user.username}"></p>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h5><i class="fas fa-info-circle"></i> Информация о вашем аккаунте</h5>
+                            <div class="row text-start">
+                                <div class="col-md-6">
+                                    <p><strong>Email:</strong> <span th:text="${session.user.email}"></span></p>
+                                    <p><strong>Телефон:</strong> <span th:text="${session.user.phone}"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Дата рождения:</strong> <span th:text="${#temporals.format(session.user.birthDate, 'dd.MM.yyyy')}"></span></p>
+                                    <p><strong>Возраст:</strong> <span th:text="${session.user.age}"></span> лет</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-primary">
+                                    <div class="card-body">
+                                        <i class="fas fa-home fa-2x text-primary mb-2"></i>
+                                        <h6>Главная страница</h6>
+                                        <a href="/" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-arrow-left"></i> На главную
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <i class="fas fa-user-edit fa-2x text-info mb-2"></i>
+                                        <h6>Профиль</h6>
+                                        <a href="/users" class="btn btn-outline-info btn-sm">
+                                            <i class="fas fa-users"></i> Пользователи
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-warning">
+                                    <div class="card-body">
+                                        <i class="fas fa-sign-out-alt fa-2x text-warning mb-2"></i>
+                                        <h6>Выход</h6>
+                                        <a href="/auth/logout" class="btn btn-outline-warning btn-sm">
+                                            <i class="fas fa-sign-out-alt"></i> Выйти
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="alert alert-success">
+                                <h5><i class="fas fa-check-circle"></i> Успешная авторизация!</h5>
+                                <p class="mb-0">Вы успешно вошли в систему. Теперь вы можете использовать все доступные функции.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i> 
+                            Время входа: <span th:text="${#temporals.format(#temporals.createNow(), 'dd.MM.yyyy HH:mm:ss')}"></span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

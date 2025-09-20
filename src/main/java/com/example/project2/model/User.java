@@ -29,8 +29,18 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     
+    @NotBlank(message = "Логин не может быть пустым")
+    @Size(min = 3, max = 30, message = "Логин должен содержать от 3 до 30 символов")
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+    
+    @NotBlank(message = "Пароль не может быть пустым")
+    @Size(min = 6, message = "Пароль должен содержать минимум 6 символов")
+    @Column(name = "password", nullable = false)
+    private String password;
+    
     @NotBlank(message = "Телефон не может быть пустым")
-    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Некорректный формат телефона")
+    @Pattern(regexp = "^\\+?[1-9]\\d{10,14}$", message = "Некорректный формат телефона")
     @Column(name = "phone", nullable = false)
     private String phone;
     
@@ -124,6 +134,22 @@ public class User {
     
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     public String getPhone() {

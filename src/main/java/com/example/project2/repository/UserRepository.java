@@ -32,6 +32,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.phone = :phone AND u.isActive = true AND u.deletedAt IS NULL")
     Optional<User> findByPhone(@Param("phone") String phone);
     
+    // Поиск по логину (только активные)
+    @Query("SELECT u FROM User u WHERE u.username = :username AND u.isActive = true AND u.deletedAt IS NULL")
+    Optional<User> findByUsername(@Param("username") String username);
+    
     // Поиск по имени и фамилии с пагинацией
     @Query("SELECT u FROM User u WHERE " +
            "(:firstName IS NULL OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :firstName, '%'))) AND " +
@@ -83,6 +87,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Проверка существования телефона (только активные)
     @Query("SELECT COUNT(u) > 0 FROM User u WHERE u.phone = :phone AND u.isActive = true AND u.deletedAt IS NULL")
     boolean existsByPhone(@Param("phone") String phone);
+    
+    // Проверка существования логина (только активные)
+    @Query("SELECT COUNT(u) > 0 FROM User u WHERE u.username = :username AND u.isActive = true AND u.deletedAt IS NULL")
+    boolean existsByUsername(@Param("username") String username);
     
     // Логическое удаление
     @Modifying
